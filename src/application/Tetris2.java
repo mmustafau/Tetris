@@ -63,7 +63,7 @@ public class Tetris2 extends Application {
 
 
 
-        int n=3;
+        int n=4;
         for (int i=0;i<4;i++)
         {
             Coordinate coordinate=new Coordinate();
