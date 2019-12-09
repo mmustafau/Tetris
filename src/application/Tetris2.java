@@ -43,6 +43,9 @@ public class Tetris2 extends Application {
     ArrayList<Coordinate> a = new ArrayList<Coordinate>();
     ArrayList<Coordinate> b = new ArrayList<Coordinate>();
 
+    ImageView[] piece = new ImageView[4];
+
+
     int dx = 0;
     boolean rotate = false;
     int colorNum = 1;
@@ -57,16 +60,17 @@ public class Tetris2 extends Application {
     public void start(Stage stage) throws Exception {
 
 
-        stage.addEventHandler(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
 
                 if (keyEvent.getCode() == KeyCode.SPACE)
-                    rotate = true;
+                   // rotate = true;
+                    rotate();
                 else if (keyEvent.getCode() == KeyCode.RIGHT)
-                    dx=1;
+                    move(1);
                 else if (keyEvent.getCode() == KeyCode.LEFT)
-                    dx=-1;
+                    move(-1);
                 else if (keyEvent.getCode() == KeyCode.DOWN)
                     dx=0;
 
@@ -92,7 +96,7 @@ public class Tetris2 extends Application {
         //  groupe.getChildren().addAll(iv);
 
 
-        int n = 3;
+        int n = 0;
 
 
         for (int i = 0; i < 4; i++) {
@@ -106,13 +110,9 @@ public class Tetris2 extends Application {
 
         //  < - MOVE -> //
 
-        for (int i = 0; i < 4; i++) {
 
-            a.get(i).x+=dx;
 
-        }
 
-        ImageView[] piece = new ImageView[4];
         for (int i = 0; i < 4; i++) {
             BufferedImage img2 = image.getSubimage(0, 0, 18, 18);
             Image im = SwingFXUtils.toFXImage(img2, null);
@@ -145,6 +145,33 @@ public class Tetris2 extends Application {
         stage.setScene(scene);
         stage.setTitle("tetris in a new way");
         stage.show();
+
+    }
+
+    private void move(int dx) {
+
+        for (int i = 0; i < 4; i++) {
+
+            piece[i].setX(piece[i].getX()+dx*18);
+       }
+
+
+    }
+
+    private void rotate() {
+        Coordinate rotCent =new Coordinate();
+        rotCent.x= (int) piece[1].getX() ;
+        rotCent.y= (int) piece[1].getY();
+
+        for (int i = 0; i < 4; i++) {
+
+            int xx = (int) (piece[i].getY()-rotCent.y);
+            int yy = (int) (piece[i].getX()-rotCent.x);
+
+            piece[i].setX(rotCent.x-xx);
+            piece[i].setY(rotCent.y+yy);
+
+        }
 
     }
 
